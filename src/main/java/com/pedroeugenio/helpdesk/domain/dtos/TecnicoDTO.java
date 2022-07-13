@@ -31,11 +31,14 @@ public class TecnicoDTO implements Serializable {
         this.senha = tecnico.getSenha();
         this.perfils = tecnico.getPerfils().stream().map(Perfil::getCodigo).collect(Collectors.toSet());
         this.dataCriacao = tecnico.getDataCriacao();
+        addPerfil(Perfil.TECNICO);
     }
-
+ 
     public TecnicoDTO() {
         super();
+        addPerfil(Perfil.TECNICO);
     }
+
 
     public Integer getId() {
         return id;
