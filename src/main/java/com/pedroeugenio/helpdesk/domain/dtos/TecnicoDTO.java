@@ -33,7 +33,7 @@ public class TecnicoDTO implements Serializable {
         this.dataCriacao = tecnico.getDataCriacao();
         addPerfil(Perfil.TECNICO);
     }
- 
+
     public TecnicoDTO() {
         super();
         addPerfil(Perfil.TECNICO);

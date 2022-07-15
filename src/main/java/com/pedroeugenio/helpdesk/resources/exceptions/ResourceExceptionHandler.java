@@ -1,16 +1,12 @@
 package com.pedroeugenio.helpdesk.resources.exceptions;
 
-import com.pedroeugenio.helpdesk.domain.Tecnico;
-import com.pedroeugenio.helpdesk.domain.dtos.TecnicoDTO;
+import com.pedroeugenio.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.pedroeugenio.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -26,6 +22,19 @@ public class ResourceExceptionHandler {
                 request.getRequestURI()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError> dataIntegrityViolationException(DataIntegrityViolationException ex,
+                                                                 HttpServletRequest request) {
+        StandardError standardError = new StandardError(
+                System.currentTimeMillis(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Violação de dados",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(standardError);
     }
 
 }
