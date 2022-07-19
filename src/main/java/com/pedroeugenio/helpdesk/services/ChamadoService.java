@@ -11,6 +11,8 @@ import com.pedroeugenio.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +47,9 @@ public class ChamadoService {
         if (chamadoDTO.getId() != null) {
             chamado.setId(chamadoDTO.getId());
         }
+        if(chamadoDTO.getStatus() == 2){
+            chamado.setDataFechamento(LocalDate.now());
+        }
 
         chamado.setTecnico(tecnico);
         chamado.setCliente(cliente);
@@ -54,5 +59,12 @@ public class ChamadoService {
         chamado.setObservacoes(chamadoDTO.getObservacoes());
         return chamado;
 
+    }
+
+    public Chamado update(Integer id, ChamadoDTO chamadoDTO) {
+        chamadoDTO.setId(id);
+        Chamado chamado = findById(id);
+        chamado = newChamado(chamadoDTO);
+        return repository.save(chamado);
     }
 }
