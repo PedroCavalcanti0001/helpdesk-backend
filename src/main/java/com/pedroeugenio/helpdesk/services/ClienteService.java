@@ -8,6 +8,7 @@ import com.pedroeugenio.helpdesk.repositories.ClienteRepository;
 import com.pedroeugenio.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.pedroeugenio.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class ClienteService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
     public Cliente findById(Integer id) {
         Optional<Cliente> tecnico = clienteRepository.findById(id);
         return tecnico.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id));
@@ -32,6 +36,7 @@ public class ClienteService {
 
     public Cliente create(ClienteDTO objDTO) {
         objDTO.setId(null);
+        objDTO.setSenha(encoder.encode(objDTO.getSenha()));
         validaPorCpfEEmail(objDTO);
         Cliente tecnico = new Cliente(objDTO);
         return clienteRepository.save(tecnico);

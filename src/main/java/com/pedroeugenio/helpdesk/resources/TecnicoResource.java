@@ -5,6 +5,7 @@ import com.pedroeugenio.helpdesk.domain.dtos.TecnicoDTO;
 import com.pedroeugenio.helpdesk.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,6 +20,10 @@ public class TecnicoResource {
 
     @Autowired
     private TecnicoService service;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<TecnicoDTO> findById(@PathVariable int id) {
@@ -35,6 +40,7 @@ public class TecnicoResource {
 
     @PostMapping
     public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO) {
+        objDTO.setSenha(objDTO.getSenha());
         Tecnico tecnico = service.create(objDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(objDTO.getId()).toUri();
         return ResponseEntity.created(uri).build();
