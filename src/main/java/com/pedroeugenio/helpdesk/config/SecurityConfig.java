@@ -1,6 +1,9 @@
 package com.pedroeugenio.helpdesk.config;
 
+import java.util.Arrays;
+
 import com.pedroeugenio.helpdesk.security.JWTAuthenticationFilter;
+import com.pedroeugenio.helpdesk.security.JWTAuthorizationFilter;
 import com.pedroeugenio.helpdesk.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import java.util.Arrays;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -42,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
 
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 
         http.authorizeHttpRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()

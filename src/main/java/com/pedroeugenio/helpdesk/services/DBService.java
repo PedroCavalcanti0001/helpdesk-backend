@@ -33,13 +33,12 @@ public class DBService {
 
     public void instanciaDB() {
         Tecnico tec1 = new Tecnico(null, "George Henrique", "258.015.240-70", "georgehenrique233@gmail.com", encoder.encode("12345"));
-        tec1.addPerfil(Perfil.ADMIN);
 
         Tecnico tec2 = new Tecnico(null, "Leozinho Vitorio", "188.122.630-11", "leozinhovito@gmail.com",encoder.encode("12345"));
-        tec1.addPerfil(Perfil.ADMIN);
+        tec2.addPerfil(Perfil.ADMIN);
 
         Tecnico tec3 = new Tecnico(null, "André", "858.393.700-10",  "andre@gmail.com",encoder.encode("12345"));
-        tec1.addPerfil(Perfil.ADMIN);
+        tec3.addPerfil(Perfil.ADMIN);
 
 
         Cliente cli1 = new Cliente(null, "Linus Torvalds", "824.518.180-34", "linustorvalds@hotmail.com",encoder.encode("12345"));
