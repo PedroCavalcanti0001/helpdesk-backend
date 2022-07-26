@@ -43,7 +43,7 @@ public class TecnicoResource {
     @PostMapping
     public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO) {
         objDTO.setSenha(objDTO.getSenha());
-        Tecnico tecnico = service.create(objDTO);
+        service.create(objDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}").buildAndExpand(objDTO.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
