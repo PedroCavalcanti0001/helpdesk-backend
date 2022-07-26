@@ -5,6 +5,7 @@ import com.pedroeugenio.helpdesk.domain.dtos.TecnicoDTO;
 import com.pedroeugenio.helpdesk.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,6 +39,7 @@ public class TecnicoResource {
         return ResponseEntity.ok(listDto);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO) {
         objDTO.setSenha(objDTO.getSenha());
@@ -46,13 +48,14 @@ public class TecnicoResource {
         return ResponseEntity.created(uri).build();
     }
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<TecnicoDTO> update(@PathVariable int id, @Valid @RequestBody TecnicoDTO tecnico) {
         Tecnico obj = service.update(id, tecnico);
         return ResponseEntity.ok().body(new TecnicoDTO(obj));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<TecnicoDTO> delete(@PathVariable int id){
         service.delete(id);
