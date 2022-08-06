@@ -53,12 +53,14 @@ public class ClienteService {
         }
     }
 
-    public Cliente update(int id, ClienteDTO tecnicoDTO) {
-        tecnicoDTO.setId(id);
-        Cliente tecnico = findById(id);
-        validaPorCpfEEmail(tecnicoDTO);
-        tecnico = new Cliente(tecnicoDTO);
-        return clienteRepository.save(tecnico);
+    public Cliente update(int id, ClienteDTO clienteDTO) {
+        clienteDTO.setId(id);
+        Cliente cliente = findById(id);
+        if(!cliente.getSenha().equals(clienteDTO.getSenha()))
+            clienteDTO.setSenha(encoder.encode(clienteDTO.getSenha()));
+        validaPorCpfEEmail(clienteDTO);
+        cliente = new Cliente(clienteDTO);
+        return clienteRepository.save(cliente);
     }
 
     public ClienteDTO delete(int id) {
